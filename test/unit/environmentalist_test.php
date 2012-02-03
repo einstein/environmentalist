@@ -79,11 +79,6 @@ namespace {
             ensure($class::$passing_error_handler_called);
         }
 
-        function test_error_handlers() {
-            assert_array($this->error_handlers);
-            ensure(!empty($this->error_handlers));
-        }
-
         function test_filename_for_class() {
             $assertions = array(
                 'User'                            => 'user',
