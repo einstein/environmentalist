@@ -7,7 +7,7 @@ Cleans up your PHP environment by managing include paths, error handlers, and au
 
 ### Enabling/disabling
 
-When `Environmentalist` is loaded, `Environmentalist::enable()` is automatically called. If you'd like to disable its behavior, simply call `Environmentalist::disable()`.
+`Environmentalist::enable()` is called when loaded. If you'd like to disable its behavior, simply call `Environmentalist::disable()`.
 
 ### Autoload extensions
 
