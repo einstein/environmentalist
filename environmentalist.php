@@ -111,16 +111,22 @@ abstract class Environmentalist {
      * Returns the underscored version of $class prefixed with its namespaces as directories
      *
      * <code>
-     * Environment::filename_for_class('ActiveRecord\Base');  # => 'active_record/base'
+     * Environmentalist::filename_for_class('ActiveRecord\Base');  # => 'active_record/base'
      * </code>
      *
      * @param string $class
      * @return string
     **/
     static function filename_for_class($class) {
-        $namespaces = array_filter(preg_split('#\\\\|::#', $class));
-        $parts = array_map(function($namespace) { return strtolower(preg_replace('/[^A-Z^a-z^0-9]+/', '_', preg_replace('/([a-z\d])([A-Z])/', '\1_\2', preg_replace('/([A-Z]+)([A-Z][a-z])/', '\1_\2', $namespace)))); }, $namespaces);
-        return implode(DIRECTORY_SEPARATOR, $parts);
+        $namespaces = array_filter(preg_split('/\\\\|::/', $class));
+        $segments = array();
+        foreach ($namespaces as $namespace) {
+            $path = preg_replace('/([A-Z]+)([A-Z][a-z])/', '\1_\2', $namespace);
+            $path = preg_replace('/([a-z\d])([A-Z])/', '\1_\2', $path);
+            $path = preg_replace('/[^A-Z^a-z^0-9]+/', '_', $path);
+            $segments[] = strtolower($path);
+        }
+        return implode(DIRECTORY_SEPARATOR, $segments);
     }
 
     /**

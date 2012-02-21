@@ -32,3 +32,12 @@ Cleans up your PHP environment by managing include paths, error handlers, and au
 `Environmentalist` tests require [jaz303/ztest](http://github.com/jaz303/ztest)
 
 Simply download it to `environmentalist/test/ztest` (or anywhere else in your PHP `include_path`), then run `test/run`
+
+
+## Todo
+
+* Update README documentation
+* Add something like `Environmentalist::register()` and `Environmentalist::unregister()` to turn on and off behavior
+* Allow other filename naming conventions to be registered
+* When `Environmentalist::error_handler()` is registered make sure to add the previous handler to the error handlers stack
+* Consider using `glob()` in `Environmentalist::resolve_include_path()`
