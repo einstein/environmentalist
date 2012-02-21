@@ -20,7 +20,7 @@ abstract class Environmentalist {
      * @return string
     **/
     static function append_autoload_extension($extension) {
-        return self::set_autoload_extensions(array_merge(self::autoload_extensions(), array($extension)));
+        return self::set_autoload_extensions(array_merge(self::autoload_extensions(), func_get_args()));
     }
 
     /**
@@ -34,7 +34,7 @@ abstract class Environmentalist {
      * @return array
     **/
     static function append_error_handler($handler) {
-        return self::set_error_handlers(array_merge(self::$error_handlers, array($handler)));
+        return self::set_error_handlers(array_merge(self::$error_handlers, func_get_args()));
     }
 
     /**
@@ -45,7 +45,7 @@ abstract class Environmentalist {
      * @return string
     **/
     static function append_include_path($path) {
-        return self::set_include_paths(array_merge(self::include_paths(), array($path)));
+        return self::set_include_paths(array_merge(self::include_paths(), func_get_args()));
     }
 
     /**
@@ -140,7 +140,7 @@ abstract class Environmentalist {
      * @return string
     **/
     static function prepend_autoload_extension($extension) {
-        return self::set_autoload_extensions(array_merge(array($extension), self::autoload_extensions()));
+        return self::set_autoload_extensions(array_merge(func_get_args(), self::autoload_extensions()));
     }
 
     /**
@@ -154,7 +154,7 @@ abstract class Environmentalist {
      * @return void
     **/
     static function prepend_error_handler($handler) {
-        return self::set_error_handlers(array_merge(array($handler), self::$error_handlers));
+        return self::set_error_handlers(array_merge(func_get_args(), self::$error_handlers));
     }
 
     /**
@@ -165,7 +165,7 @@ abstract class Environmentalist {
      * @return string
     **/
     static function prepend_include_path($path) {
-        return self::set_include_paths(array_merge(array($path), self::include_paths()));
+        return self::set_include_paths(array_merge(func_get_args(), self::include_paths()));
     }
 
     /**
@@ -176,7 +176,7 @@ abstract class Environmentalist {
      * @return string
     **/
     static function remove_autoload_extension($extension) {
-        return self::set_autoload_extensions(array_diff(self::autoload_extensions(), array($extension)));
+        return self::set_autoload_extensions(array_diff(self::autoload_extensions(), func_get_args()));
     }
 
     /**
@@ -187,7 +187,7 @@ abstract class Environmentalist {
      * @return array
     **/
     static function remove_error_handler($handler) {
-        return self::set_error_handlers(array_diff(self::error_handlers(), array($handler)));
+        return self::set_error_handlers(array_diff(self::error_handlers(), func_get_args()));
     }
 
     /**
@@ -198,7 +198,7 @@ abstract class Environmentalist {
      * @return string
     **/
     static function remove_include_path($path) {
-        return self::set_include_paths(array_diff(self::include_paths(), array($path)));
+        return self::set_include_paths(array_diff(self::include_paths(), func_get_args()));
     }
 
     /**
