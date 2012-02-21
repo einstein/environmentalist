@@ -6,16 +6,16 @@ namespace EnvironmentalistTest {
         static $failing_error_handler_called = false;
         static $passing_error_handler_called = false;
 
-        static function exception_error_handler($number, $message, $file, $line, &$context) {
+        static function exception_error_handler($number, $message, $file, $line, $context) {
             throw new \RuntimeException;
         }
 
-        static function failing_error_handler($number, $message, $file, $line, &$context) {
+        static function failing_error_handler($number, $message, $file, $line, $context) {
             self::$failing_error_handler_called = true;
             return false;
         }
 
-        static function passing_error_handler($number, $message, $file, $line, &$context) {
+        static function passing_error_handler($number, $message, $file, $line, $context) {
             self::$passing_error_handler_called = true;
         }
 

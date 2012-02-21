@@ -5,6 +5,10 @@ Cleans up your PHP environment by managing include paths, error handlers, and au
 
 ## Usage
 
+### Enabling/disabling
+
+When `Environmentalist` is loaded, `Environmentalist::enable()` is automatically called. If you'd like to disable its behavior, simply call `Environmentalist::disable()`.
+
 ### Autoload extensions
 
     Environmentalist::autoload_extensions()
@@ -37,7 +41,5 @@ Simply download it to `environmentalist/test/ztest` (or anywhere else in your PH
 ## Todo
 
 * Update README documentation
-* Add something like `Environmentalist::register()` and `Environmentalist::unregister()` to turn on and off behavior
 * Allow other filename naming conventions to be registered
-* When `Environmentalist::error_handler()` is registered make sure to add the previous handler to the error handlers stack
 * Consider using `glob()` in `Environmentalist::resolve_include_path()`

@@ -8,9 +8,19 @@ abstract class Environmentalist {
     const SPL_AUTOLOAD_EXTENSION_SEPARATOR = ',';
 
     /**
+     * Boolean which determines if this class' behavior has been enabled
+    **/
+    static protected $enabled = false;
+
+    /**
      * Stores registered custom error handlers.
     **/
     static protected $error_handlers = array();
+
+    /**
+     * Stores the previously registered error handler if there was one.
+    **/
+    static protected $previous_error_handler;
 
     /**
      * Appends an extension to the end of spl_autoload_extensions.
@@ -53,12 +63,11 @@ abstract class Environmentalist {
      * Requires a file with the underscored version of a class name and subdirectories for each namespace.
      *
      * <code>
-     * Environment::autoload('ActiveRecord\Base');  # => include 'active_record/base.php';
+     * Environmentalist::autoload('ActiveRecord\Base');  # => include 'active_record/base.php';
      * </code>
      *
      * @param string $class
      * @return void
-     * @static
     **/
     static function autoload($class) {
         $filename = self::filename_for_class($class);
@@ -80,9 +89,41 @@ abstract class Environmentalist {
     }
 
     /**
+     * Disables this class' behavior by unregistering its autoload method and restoring the previous error handler.
+     *
+     * @return void
+    **/
+    static function disable() {
+        if (self::$enabled) {
+            spl_autoload_unregister(__CLASS__.'::autoload');
+            if (self::$previous_error_handler) {
+                set_error_handler(self::$previous_error_handler);
+                unset(self::$previous_error_handler);
+            } else {
+                restore_error_handler();
+            }
+            self::$enabled = false;
+        }
+    }
+
+    /**
+     * Enables this class' behavior by registering its autoload and error handler methods.
+     *
+     * @return void
+    **/
+    static function enable() {
+        if (!self::$enabled) {
+            spl_autoload_register(__CLASS__.'::autoload');
+            self::$previous_error_handler = set_error_handler(__CLASS__.'::error_handler');
+            self::$enabled = true;
+        }
+    }
+
+    /**
      * Default error handler implementation.
      * Passes errors to the handlers registered with the Environment class.
-     * If all custom handlers do not handle the error, then the error is passed to the default php handler.
+     * If all custom handlers do not handle the error, then the error is passed to the previous error handler.
+     * If one doesn't exist, then the default php error handler is called.
      *
      * @param string $number
      * @param string $message
@@ -91,11 +132,10 @@ abstract class Environmentalist {
      * @param string $context
      * @return void | boolean
     **/
-    static function error_handler($number, $message, $file, $line, &$context) {
-        foreach (self::$error_handlers as $handler) {
-            if (call_user_func($handler, $number, $message, $file, $line, $context) !== false) return;
-        }
-        return false;
+    static function error_handler($number, $message, $file, $line, $context) {
+        $arguments = func_get_args();
+        foreach (self::$error_handlers as $handler) if (call_user_func_array($handler, $arguments) !== false) return;
+        return self::$previous_error_handler ? call_user_func_array(self::$previous_error_handler, $arguments) : false;
     }
 
     /**
@@ -270,5 +310,4 @@ abstract class Environmentalist {
 
 }
 
-spl_autoload_register('Environmentalist::autoload');
-set_error_handler('Environmentalist::error_handler');
+Environmentalist::enable();
