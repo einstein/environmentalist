@@ -144,11 +144,11 @@ namespace {
         }
 
         function test_resolve_include_path() {
-            $filename = basename(__FILE__);
+            $filename_with_extension = basename(__FILE__);
+            $filename = preg_replace('/\.[^\.]+$/', '', $filename_with_extension);
             ensure(!Environmentalist::resolve_include_path($filename));
-
             Environmentalist::append_include_path(__DIR__);
-            assert_equal(__DIR__.DIRECTORY_SEPARATOR.$filename, Environmentalist::resolve_include_path($filename));
+            assert_equal(__DIR__.DIRECTORY_SEPARATOR.$filename_with_extension, Environmentalist::resolve_include_path($filename));
             Environmentalist::remove_include_path(__DIR__);
         }
 

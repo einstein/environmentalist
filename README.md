@@ -42,4 +42,3 @@ Simply download it to `environmentalist/test/ztest` (or anywhere else in your PH
 
 * Update README documentation
 * Allow other filename naming conventions to be registered
-* Consider using `glob()` in `Environmentalist::resolve_include_path()`

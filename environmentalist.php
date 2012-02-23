@@ -60,7 +60,7 @@ abstract class Environmentalist {
 
     /**
      * Default autoload implementation.
-     * Requires a file with the underscored version of a class name and subdirectories for each namespace.
+     * Includes a file with the underscored version of a class name and subdirectories for each namespace.
      *
      * <code>
      * Environmentalist::autoload('ActiveRecord\Base');  # => include 'active_record/base.php';
@@ -71,12 +71,7 @@ abstract class Environmentalist {
     **/
     static function autoload($class) {
         $filename = self::filename_for_class($class);
-        foreach (self::autoload_extensions() as $extension) {
-            if ($file = self::resolve_include_path($filename.$extension)) {
-                include $file;
-                break;
-            }
-        }
+        if ($file = self::resolve_include_path($filename)) include $file;
     }
 
     /**
@@ -254,19 +249,9 @@ abstract class Environmentalist {
      * @return string | false
     **/
     static function resolve_include_path($filename) {
-        $resolved_include_path = false;
-        if (function_exists('stream_resolve_include_path')) {
-            $resolved_include_path = stream_resolve_include_path($filename);
-        } else {
-            foreach (self::include_paths() as $include_path) {
-                $file = realpath($include_path.DIRECTORY_SEPARATOR.$filename);
-                if ($file && file_exists($file)) {
-                    $resolved_include_path = $file;
-                    break;
-                }
-            }
-        }
-        return $resolved_include_path;
+        $pattern = '{'.implode(',', self::include_paths()).'}'.DIRECTORY_SEPARATOR.$filename.'{'.implode(',', self::autoload_extensions()).'}';
+        $matches = glob($pattern, GLOB_BRACE | GLOB_NOSORT);
+        return empty($matches) ? false : $matches[0];
     }
 
     /**
