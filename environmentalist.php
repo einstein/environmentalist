@@ -262,7 +262,7 @@ abstract class Environmentalist {
      * @return string
     **/
     static function set_autoload_extensions($extensions) {
-        if (is_array($extensions)) $extensions = implode(self::SPL_AUTOLOAD_EXTENSION_SEPARATOR, $extensions);
+        if (is_array($extensions)) $extensions = implode(self::SPL_AUTOLOAD_EXTENSION_SEPARATOR, array_unique($extensions));
         $old_spl_autoload_extensions = spl_autoload_extensions();
         spl_autoload_extensions($extensions);
         return $old_spl_autoload_extensions;
@@ -277,7 +277,7 @@ abstract class Environmentalist {
     **/
     static function set_error_handlers($handlers) {
         $old_handlers = self::error_handlers();
-        self::$error_handlers = $handlers;
+        self::$error_handlers = array_unique($handlers);
         return $old_handlers;
     }
 
@@ -289,7 +289,7 @@ abstract class Environmentalist {
      * @return string
     **/
     static function set_include_paths($paths) {
-        if (is_array($paths)) $paths = implode(PATH_SEPARATOR, $paths);
+        if (is_array($paths)) $paths = implode(PATH_SEPARATOR, array_unique($paths));
         return set_include_path($paths);
     }
 
