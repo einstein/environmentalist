@@ -79,27 +79,6 @@ namespace {
             ensure($class::$passing_error_handler_called);
         }
 
-        function test_filename_for_class() {
-            $assertions = array(
-                'User'                            => 'user',
-                'user'                            => 'user',
-                'USER'                            => 'user',
-                'User99'                          => 'user99',
-                'Namespaced\User'                 => 'namespaced/user',
-                'Namespaced::User'                => 'namespaced/user',
-                '\Namespaced\User'                => 'namespaced/user',
-                '\Namespaced::User'               => 'namespaced/user',
-                '::Namespaced::User'              => 'namespaced/user',
-                '::Namespaced\User'               => 'namespaced/user',
-                'CamelCased\User'                 => 'camel_cased/user',
-                'under_scored\User'               => 'under_scored/user',
-                'CamelCase_and_Under_Scored\User' => 'camel_case_and_under_scored/user'
-            );
-            foreach ($assertions as $class => $filename) {
-                assert_equal($filename, Environmentalist::filename_for_class($class));
-            }
-        }
-
         function test_include_paths() {
             assert_equal(explode(PATH_SEPARATOR, get_include_path()), Environmentalist::include_paths());
         }
