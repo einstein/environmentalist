@@ -4,6 +4,12 @@ namespace Environmentalist;
 
 abstract class NamingConvention {
 
+    static function psr_0($class) {
+        $namespaces = array_filter(preg_split('/\\\\|::/', $class));
+        $class = preg_replace('/_+/', DIRECTORY_SEPARATOR, array_pop($namespaces));
+        return implode(DIRECTORY_SEPARATOR, array_merge($namespaces, array($class)));
+    }
+
     static function underscore($class) {
         $namespaces = array_filter(preg_split('/\\\\|::/', $class));
         $segments = array();
