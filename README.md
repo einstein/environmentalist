@@ -3,6 +3,16 @@
 Cleans up your PHP environment by managing include paths, error handlers, and autoloading
 
 
+## Installation
+
+If you're using `composer` simply add the `einstein/environmentalist` dependency to your `packages.json` file.
+
+Otherwise you can manually install it by cloning the repository somewhere in your php `include_path`.
+
+    git clone git@github.com:einstein/environmentalist.git`
+    require 'environmentalist/environmentalist.php';
+
+
 ## Usage
 
 ### Enabling/disabling
