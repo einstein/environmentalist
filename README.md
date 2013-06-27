@@ -5,7 +5,7 @@ Cleans up your PHP environment by managing include paths, error handlers, and au
 
 ## Installation
 
-If you're using `composer` simply add the `einstein/environmentalist` dependency to your `packages.json` file.
+If you're using `composer` simply add the `einstein/environmentalist` dependency to your `composer.json` file.
 
 Otherwise you can manually install it by cloning the repository somewhere in your php `include_path`.
 
